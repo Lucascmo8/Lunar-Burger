@@ -1,40 +1,40 @@
 <template>
-    <div>
-        <Titulo />
-        <lifecycleHooks />
-        <Formulario />
-        <Info />
-    </div>
+  <NavBar :logo="logoSrc" :alt="appName"/>
+  <router-view/>
+  <Footer/>
 </template>
 
 <script>
-import Titulo from './components/Titulo.vue'
-import lifecycleHooks from './components/lifecycleHooks.vue'
-import Formulario from './components/Formulario.vue'
-import Info from './components/Info.vue'
-
-    
-export default{
-        name:'App',
-        components:{
-            Titulo,
-            lifecycleHooks,
-            Formulario,
-            Info,
-        }
+  import NavBar from './components/NavBar.vue';
+  import Footer from './components/Footer.vue';
+  export default{
+    components:{
+      NavBar,
+      Footer,
+    },
+    data(){
+      return{
+        logoSrc:"/images/logo.png",
+        appName:"Lunar Burguer"
+      }
     }
+  }
 </script>
 
 <style>
-    body{
-        background-color: black;
-        color:antiquewhite;
-    }
-    img{
-        background:red;
-    }
-    a{
-        text-decoration: none;
-        color: red;
-    }
+  *{
+    margin:0;
+    padding:0;
+    font-family: Helvetica, sans-serif;
+  }
+
+  .mainContainer{
+    margin:50px;
+    min-height: 250px;
+  }
+
+  h2{
+    text-align:center ;
+    font-size: 42px;
+  }
 </style>
