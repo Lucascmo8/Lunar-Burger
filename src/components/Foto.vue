@@ -1,5 +1,5 @@
 <template>
-    <img :src="avatar" :alt="descricao">
+    <img id="imagem" :src="avatar" :alt="descricao">
 </template>
 
 <script>
@@ -13,3 +13,9 @@
         }
     }
 </script>
+
+<style scoped>
+    img{
+        background: yellow;
+    }
+</style>

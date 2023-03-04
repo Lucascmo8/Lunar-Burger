@@ -24,3 +24,17 @@ export default{
         }
     }
 </script>
+
+<style>
+    body{
+        background-color: black;
+        color:antiquewhite;
+    }
+    img{
+        background:red;
+    }
+    a{
+        text-decoration: none;
+        color: red;
+    }
+</style>
