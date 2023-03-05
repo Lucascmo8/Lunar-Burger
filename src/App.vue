@@ -37,4 +37,8 @@
     text-align:center ;
     font-size: 42px;
   }
+
+  button,label,input,select,option{
+    cursor: pointer;
+  }
 </style>
