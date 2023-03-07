@@ -21,7 +21,7 @@ import FormCriarPedido from '../components/FormCriarPedido.vue';
 
 <style scoped>
   main{
-    margin-bottom: 180px;
+    margin-bottom: 40px;
     
   }
 

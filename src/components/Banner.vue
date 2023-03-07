@@ -15,7 +15,7 @@
 
     #bannerContainer{
         background-image: url(/images/banner-burger.jpg);
-        background-position:center bottom;
+        background-position: center 65%;
         background-size: cover;
         background-repeat:no-repeat ;
         height: 500px;
@@ -23,6 +23,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        margin-top: 74px;
     }
 
     h2{

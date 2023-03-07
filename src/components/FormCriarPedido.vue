@@ -7,30 +7,30 @@
 
             <div class="inputContainer">
                 <label for="nomeCliente" class="labelInput">Nome do cliente</label>
-                <input type="text" id="nomeCliente" name="nomeCliente" placeholder="Digite o seu nome" required>
+                <input type="text" id="nomeCliente" name="nomeCliente" v-model="nomeCliente" placeholder="Digite o seu nome" required>
             </div>
 
             <div class="inputContainer">
                 <label for="tipoPao" class="labelInput">Escolha o pão</label>
-                <select name="tipoPao" id="tipoPao" required>
+                <select name="tipoPao" id="tipoPao" v-model="paoEscolhido" required>
                     <option value="" class="nullOption" disabled selected>Selecione o seu pão</option>
-                    <option v-for="(pao,index) in paes" :key="index" value="pao">{{ pao }}</option>
+                    <option v-for="(pao,index) in paes" :key="index" :value="pao">{{ pao }}</option>
                 </select>
             </div>
 
             <div class="inputContainer">
                 <label for="tipoCarne" class="labelInput">Escolha o carne</label>
-                <select name="tipoCarne" id="tipoCarne" required>
+                <select name="tipoCarne" id="tipoCarne" v-model="carneEscolhida" required>
                     <option value="" class="nullOption" disabled selected>Selecione a sua carne</option>
-                    <option v-for="(carne,index) in carnes" :key="index" value="pao">{{ carne }}</option>
+                    <option v-for="(carne,index) in carnes" :key="index" :value="carne">{{ carne }}</option>
                 </select>
             </div>
 
             <label for="opcionais" class="labelInput">Gostaria de algo a mais?</label>
             <div id="checkboxContainer">
-                <div class="optionContainer">
-                        <input type="checkbox" name="salame" id="salame" value="salame">
-                    <label for="salame">Salame</label>
+                <div class="optionContainer" v-for="(opcional,index) in opcionais" :key="index">
+                        <input type="checkbox" name="opcionais" :id="opcional" v-model="opcionaisEscolhidos" :value="opcional">
+                    <label :for="opcional">{{opcional}}</label>
                 </div>
             </div>
             <button id="buttonSubmit">Criar pedido</button>
@@ -47,20 +47,48 @@
         methods:{
             concluirPedido(evento){
                 evento.preventDefault()
+
+                const pedidoCriado ={
+                    nomeDoCliente:this.nomeCliente,
+                    pao:this.paoEscolhido,
+                    carne:this.carneEscolhida,
+                    opcionais:Array.from(this.opcionaisEscolhidos),
+                    status:"solicitado",
+                }
+                this.criarPedido(pedidoCriado)
+                this.limparFormulario()
+            },
+            adicionarPedidoLocalStorage(pedidos){
+                
+                return localStorage.setItem("pedidos",JSON.stringify(pedidos))
+            },
+            pegarPedidosLocalStorage(){
+                
+                return JSON.parse(localStorage.getItem("pedidos")) ?? []
+            },
+            criarPedido(pedido){
+                let pedidos = this.pegarPedidosLocalStorage()
+                pedidos.push(pedido)
+                this.adicionarPedidoLocalStorage(pedidos)
+            },
+            limparFormulario(){
+                this.nomeCliente = ""
+                this.paoEscolhido=""
+                this.carneEscolhida=""
+                this.opcionaisEscolhidos=""
             }
         },
         data(){
             return{
-                nomeCliente:undefined,
-                paoEscolhido:undefined,
-                carneEscolhida:undefined,
+                nomeCliente:null,
+                paoEscolhido:null,
+                carneEscolhida:null,
                 opcionaisEscolhidos:[],
 
                 paes:["Brioche","Integral","Italiano","Três Queijos"],
                 carnes:["Costela","Frango","Maminha","Picanha"],
                 opcionais:["Azeitona","Bacon","Calabresa","Cebola roxa","Cheddar","Salame"],
-                status:"solicitado",
-                mensagem:undefined,
+                mensagem:null,
             }
         }
     }
@@ -76,6 +104,7 @@
         padding: 16px;
         border-radius:10px;
         transition: 1s ease-in-out ;
+        min-width: 200px;
     }
 
     form:hover{
@@ -103,11 +132,13 @@
 
     input,select{
         padding: 5px 10px;
+        border-radius: 10px;
     }
 
     #checkboxContainer{
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap:32px;
         padding:15px;
     }
 
@@ -127,12 +158,18 @@
         padding: 10px;
         border-radius: 10px;
         font-size: 18px;
-        transition: color 1s ease-in-out,background 1s ease-in-out;
+        transition: color 1s ease-in-out,background-color 1s ease-in-out;
     }
 
     #buttonSubmit:hover{
         background-color:#fcba03;
         color: #222 ;
+    }
+
+    @media(max-width:360px){
+        #checkboxContainer{
+            grid-template-columns: 1fr;
+        }
     }
 
 </style>
