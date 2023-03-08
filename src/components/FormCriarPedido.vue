@@ -1,9 +1,9 @@
 <template>
     <div id="formContainer">
         <div>
-                <p>Pedido feito</p>
+                <MensagemDeEnvio :mensagem="mensagem" v-show="mensagem"/>
         </div>
-        <form @submit="concluirPedido">
+        <form @submit.prevent="concluirPedido">
 
             <div class="inputContainer">
                 <label for="nomeCliente" class="labelInput">Nome do cliente</label>
@@ -39,31 +39,33 @@
 </template>
 
 <script>
+    import MensagemDeEnvio from './MensagemDeEnvio.vue'
+
     export default {
         name:"FormCriarPedido",
         data(){
 
         },
         methods:{
-            concluirPedido(evento){
-                evento.preventDefault()
+            concluirPedido(){
+                
 
                 const pedidoCriado ={
                     nomeDoCliente:this.nomeCliente,
                     pao:this.paoEscolhido,
                     carne:this.carneEscolhida,
                     opcionais:Array.from(this.opcionaisEscolhidos),
-                    status:"solicitado",
+                    status:"Solicitado",
                 }
                 this.criarPedido(pedidoCriado)
                 this.limparFormulario()
+                this.mostrarMensagem()
+                setTimeout(()=>this.esconderMensagem(),5000)
             },
             adicionarPedidoLocalStorage(pedidos){
-                
                 return localStorage.setItem("pedidos",JSON.stringify(pedidos))
             },
-            pegarPedidosLocalStorage(){
-                
+            pegarPedidosLocalStorage(){   
                 return JSON.parse(localStorage.getItem("pedidos")) ?? []
             },
             criarPedido(pedido){
@@ -76,7 +78,14 @@
                 this.paoEscolhido=""
                 this.carneEscolhida=""
                 this.opcionaisEscolhidos=""
+            },
+            mostrarMensagem(){
+                this.mensagem = `Seu foi realizado com sucesso`
+            },
+            esconderMensagem(){
+                this.mensagem = null
             }
+
         },
         data(){
             return{
@@ -90,6 +99,9 @@
                 opcionais:["Azeitona","Bacon","Calabresa","Cebola roxa","Cheddar","Salame"],
                 mensagem:null,
             }
+        },
+        components:{
+            MensagemDeEnvio
         }
     }
 </script>
@@ -105,6 +117,7 @@
         border-radius:10px;
         transition: 1s ease-in-out ;
         min-width: 200px;
+        margin-top:20px;
     }
 
     form:hover{
@@ -161,7 +174,7 @@
         transition: color 1s ease-in-out,background-color 1s ease-in-out;
     }
 
-    #buttonSubmit:hover{
+    #buttonSubmit:hover,#buttonSubmit:focus{
         background-color:#fcba03;
         color: #222 ;
     }
