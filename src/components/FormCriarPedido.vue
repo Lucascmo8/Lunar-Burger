@@ -7,7 +7,7 @@
 
             <div class="inputContainer">
                 <label for="nomeCliente" class="labelInput">Nome do cliente</label>
-                <input type="text" id="nomeCliente" name="nomeCliente" v-model="nomeCliente" placeholder="Digite o seu nome" required>
+                <input type="text" id="nomeCliente" name="nomeCliente" v-model="nomeCliente" placeholder="Digite o seu nome" required minlength="3">
             </div>
 
             <div class="inputContainer">
@@ -77,7 +77,7 @@
                 this.nomeCliente = ""
                 this.paoEscolhido=""
                 this.carneEscolhida=""
-                this.opcionaisEscolhidos=""
+                this.opcionaisEscolhidos=[]
             },
             mostrarMensagem(){
                 this.mensagem = `Seu foi realizado com sucesso`

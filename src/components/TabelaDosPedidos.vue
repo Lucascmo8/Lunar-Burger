@@ -1,5 +1,5 @@
 <template>
-    <div>    
+    <div v-if="this.pedidos != false">
         <table id="TabelaDosPedidos">
             <thead>
                 <tr>
@@ -13,17 +13,17 @@
             </thead>
             <tbody>
                 <tr v-for="(pedido,index) in pedidos" :key="index">
-                    <td>{{ index }}</td>
+                    <td>{{ index + 1 }}</td>
                     <td>{{pedido.nomeDoCliente}}</td>
                     <td>{{pedido.pao}}</td>
                     <td>{{pedido.carne}}</td>
-                    <td>{{ pedido.opcionais.join(", ")}}</td>
+                    <td class="opcionaisDetalhe">{{ pedido.opcionais.join(", ")}}</td>
                     <td class="acoesTabela">
-                        <select name="" id="" >
-                            <option value="">Selecione</option>
+                        <select name="" id="" @change="atualizarPedido($event,index)">
+                            <option value="" disabled>Selecione</option>
                             <option v-for="(stat,indexs) in status" :key="indexs" :value="stat" :selected="pedido.status == stat">{{ stat }}</option>
                         </select>
-                        <button>Apagar</button>
+                        <button @click="apagarPedido(index)">Apagar</button>
                     </td>
                 </tr>
                 
@@ -31,26 +31,42 @@
     
         </table>
     </div>
+    <h3 v-else>Não há Pedidos cadastrados aqui</h3>
+
 </template>
 
-<script>
+<script >
     export default{
         name:"TabelaDosPedidos",
         data(){
             return{
                 pedidos:this.pegarPedidosLocalStorage(),
                 pedidoId:null,
-                status:["Solicitado","Em Produção","Finalizado"]
+                status:["Solicitado","Em Produção","Finalizado"], 
             }
         },
         methods:{
             pegarPedidosLocalStorage(){   
                 return JSON.parse(localStorage.getItem("pedidos")) ?? []
             },
-
+            adicionarPedidoLocalStorage(pedidos){
+                return localStorage.setItem("pedidos",JSON.stringify(pedidos))
+            },
+            apagarPedido(numeroDoPedido){
+                const pedidosLocalStorage = this.pegarPedidosLocalStorage()
+                pedidosLocalStorage.splice(numeroDoPedido,1)
+                this.adicionarPedidoLocalStorage(pedidosLocalStorage)
+                this.pedidos = this.pegarPedidosLocalStorage()
+            },  
+            atualizarPedido(evento,numeroDoPedido){
+                const pedidosLocalStorage = this.pegarPedidosLocalStorage()
+                pedidosLocalStorage[numeroDoPedido].status = evento.target.value
+                this.adicionarPedidoLocalStorage(pedidosLocalStorage)
+            }
         },
+
         mounted(){
-            console.log(this.status)
+            
         }
     }
 </script>
@@ -99,5 +115,14 @@
     button:hover,button:focus{
         background-color:#fcba03;
         color: #222 ;
+    }
+
+    .opcionaisDetalhe{
+        text-align: left;
+    }
+
+    h3{
+        margin-top: 32px;
+        text-align: center;
     }
 </style>
