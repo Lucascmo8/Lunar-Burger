@@ -80,7 +80,7 @@
                 this.opcionaisEscolhidos=[]
             },
             mostrarMensagem(){
-                this.mensagem = `Seu foi realizado com sucesso`
+                this.mensagem = `Seu pedido foi realizado com sucesso`
             },
             esconderMensagem(){
                 this.mensagem = null
